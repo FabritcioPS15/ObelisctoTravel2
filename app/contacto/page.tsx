@@ -1,0 +1,122 @@
+import Link from "next/link"
+import { ArrowRight, Mail, Phone, MapPin, Clock } from "lucide-react"
+
+export const metadata = {
+  title: "Contáctenos | Obelisco Travel – Tours en Ayacucho, Perú",
+  description:
+    "Comunícate con Obelisco Travel para reservar tours, paquetes turísticos y servicios de transporte en Ayacucho, Perú. Respondemos por WhatsApp, email y teléfono.",
+  keywords: ["contacto Obelisco Travel", "reservar tour Ayacucho", "agencia turismo Ayacucho contacto", "WhatsApp turismo Perú"],
+}
+
+const contactInfo = [
+  { icon: Phone, label: "Teléfono / WhatsApp", value: "+51 999 999 999", href: "https://wa.me/51999999999" },
+  { icon: Mail, label: "Email", value: "info@obeliscotravel.pe", href: "mailto:info@obeliscotravel.pe" },
+  { icon: MapPin, label: "Dirección", value: "Jr. Lima 123, Ayacucho, Perú", href: "#" },
+  { icon: Clock, label: "Horario de atención", value: "Lun–Sáb: 8:00 am – 7:00 pm", href: "#" },
+]
+
+export default function ContactoPage() {
+  return (
+    <>
+      <section className="relative h-[45vh] min-h-[350px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1568454537842-d933259bb258?w=1920&q=80')" }}>
+          <div className="absolute inset-0 bg-black/55" />
+        </div>
+        <div className="relative z-10 text-center text-white px-4 max-w-3xl mx-auto">
+          <span className="inline-block mb-4 rounded-full bg-primary/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground">Estamos aquí para ti</span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">Contáctenos</h1>
+          <p className="text-lg md:text-xl text-white/90 leading-relaxed">Planifica tu próxima aventura con nosotros. Respondemos en menos de 2 horas.</p>
+        </div>
+      </section>
+
+      <section className="py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+            {/* Form */}
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-foreground mb-2">Envíanos un mensaje</h2>
+              <p className="text-muted-foreground mb-8">Cuéntanos sobre tu viaje ideal y te respondemos con una propuesta personalizada.</p>
+
+              <form className="space-y-5">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="nombre" className="block text-sm font-medium text-foreground mb-1.5">Nombre completo *</label>
+                    <input type="text" id="nombre" required className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition" placeholder="Tu nombre" />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1.5">Email *</label>
+                    <input type="email" id="email" required className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition" placeholder="tu@email.com" />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="telefono" className="block text-sm font-medium text-foreground mb-1.5">Teléfono / WhatsApp</label>
+                  <input type="tel" id="telefono" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition" placeholder="+51 999 999 999" />
+                </div>
+                <div>
+                  <label htmlFor="servicio" className="block text-sm font-medium text-foreground mb-1.5">Servicio de interés</label>
+                  <select id="servicio" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition">
+                    <option value="">Selecciona una opción</option>
+                    <option value="tour">Tour específico</option>
+                    <option value="paquete">Paquete turístico</option>
+                    <option value="transporte">Servicio de transporte</option>
+                    <option value="hotel">Reserva de hotel</option>
+                    <option value="personalizado">Itinerario personalizado</option>
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="fechas" className="block text-sm font-medium text-foreground mb-1.5">Fechas de viaje tentativas</label>
+                  <input type="text" id="fechas" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition" placeholder="Ej: 15–20 de julio 2025" />
+                </div>
+                <div>
+                  <label htmlFor="mensaje" className="block text-sm font-medium text-foreground mb-1.5">Mensaje *</label>
+                  <textarea id="mensaje" rows={4} required className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition resize-none" placeholder="Cuéntanos sobre tu viaje ideal: destinos de interés, número de personas, preferencias especiales..." />
+                </div>
+                <button type="submit" className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
+                  Enviar mensaje
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </form>
+            </div>
+
+            {/* Contact Info */}
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-2xl font-bold tracking-tight text-foreground mb-2">Información de contacto</h2>
+                <p className="text-muted-foreground">También puedes contactarnos directamente por cualquiera de estos medios.</p>
+              </div>
+
+              <div className="space-y-4">
+                {contactInfo.map((item) => (
+                  <a key={item.label} href={item.href} className="flex items-start gap-4 rounded-xl border border-border bg-card p-5 hover:border-primary transition-colors group">
+                    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                      <item.icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">{item.label}</p>
+                      <p className="text-sm font-semibold text-foreground">{item.value}</p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+
+              {/* WhatsApp CTA */}
+              <div className="rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 p-6">
+                <h3 className="text-lg font-bold text-foreground mb-2">¿Prefieres WhatsApp?</h3>
+                <p className="text-sm text-muted-foreground mb-4">Escríbenos directamente y te respondemos al instante. ¡Es el método más rápido!</p>
+                <a
+                  href="https://wa.me/51999999999?text=Hola, quiero información sobre sus tours y servicios"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#20b858] transition-colors"
+                >
+                  Escribir por WhatsApp
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
