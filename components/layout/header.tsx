@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { Menu, X, ChevronDown, Globe, Compass, Car, Map as MapIcon, Building, ArrowRight } from "lucide-react"
+import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { useLang, type Locale } from "@/lib/store/lang"
@@ -77,12 +78,7 @@ export function Header() {
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-4 lg:px-8 relative z-10">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground">
-            <Compass className="h-6 w-6" />
-          </div>
-          <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-            Obelisco Travel
-          </span>
+<Image src="/Logo.png" alt="Obelisco Travel" width={40} height={40} className="h-8 w-auto" />
         </Link>
 
         {/* Desktop Nav */}
