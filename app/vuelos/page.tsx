@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { FlightsHero } from "@/components/vuelos/flights-hero"
+import { PageBanner } from "@/components/ui/page-banner"
 import { FlightSearchForm } from "@/components/vuelos/flight-search-form"
 import { FlightResults } from "@/components/vuelos/flight-results"
 import { FlightInfo } from "@/components/vuelos/flight-info"
@@ -38,7 +38,7 @@ export default function VuelosPage() {
 
   return (
     <>
-      <FlightsHero />
+      <PageBanner pageKey="vuelos" backgroundImage="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1920&q=80" className="h-[45vh] min-h-[320px]" />
 
       <section className="py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">

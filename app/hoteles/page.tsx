@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { HotelsHero } from "@/components/hoteles/hotels-hero"
+import { PageBanner } from "@/components/ui/page-banner"
 import { HotelsFilters } from "@/components/hoteles/hotels-filters"
 import { HotelCard } from "@/components/hoteles/hotel-card"
 import { hotels } from "@/lib/data/hotels"
@@ -20,7 +20,7 @@ export default function HotelesPage() {
 
   return (
     <>
-      <HotelsHero />
+      <PageBanner pageKey="hoteles" backgroundImage="https://images.unsplash.com/photo-1587061949409-02df41d5e562?w=1920&q=80" className="h-[50vh] min-h-[350px]" />
 
       <section className="py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">

@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { DM_Serif_Display, DM_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { FloatingWhatsApp } from '@/components/layout/floating-whatsapp'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const dmSerif = DM_Serif_Display({ subsets: ['latin'], weight: '400', variable: '--font-dm-serif' });
+const dmSans = DM_Sans({ subsets: ['latin'], weight: ['300', '400', '500'], variable: '--font-dm-sans' });
 
 export const metadata: Metadata = {
   title: 'Obelisco Travel | Tours Privados y Aventura en Perú',
@@ -40,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="bg-background">
-      <body className="font-sans antialiased">
+      <body className={`${dmSans.variable} ${dmSerif.variable} font-sans antialiased`}>
         <Header />
         <main className="min-h-screen pt-16">
           {children}

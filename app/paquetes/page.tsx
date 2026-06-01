@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ArrowRight, Star, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { PageBanner } from "@/components/ui/page-banner"
 
 export const metadata = {
   title: "Paquetes Turísticos Ayacucho | Obelisco Travel – Todo Incluido",
@@ -14,16 +15,7 @@ import { PackageList } from "@/components/paquetes/package-list"
 export default function PaquetesPage() {
   return (
     <>
-      <section className="relative h-[55vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&q=80')" }}>
-          <div className="absolute inset-0 bg-black/55" />
-        </div>
-        <div className="relative z-10 text-center text-white px-4 max-w-3xl mx-auto">
-          <span className="inline-block mb-4 rounded-full bg-primary/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground">Paquetes completos</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">Paquetes Turísticos</h1>
-          <p className="text-lg md:text-xl text-white/90 leading-relaxed">Combinaciones curadas de tours, transporte y alojamiento para que solo te preocupes de disfrutar.</p>
-        </div>
-      </section>
+      <PageBanner pageKey="paquetes" backgroundImage="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&q=80" />
 
       <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">

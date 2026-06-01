@@ -5,15 +5,24 @@ import { MapPin, Clock, Users, ArrowLeft, ArrowRight, CheckCircle } from "lucide
 import { FaWhatsapp } from "react-icons/fa"
 import Link from "next/link"
 import { useState } from "react"
+import { format } from "date-fns"
+import { es, enUS, ptBR } from "date-fns/locale"
+import type { Tour } from "@/lib/data/tours"
+import { ScrollAnimation } from "@/components/ui/scroll-animation"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { CalendarIcon } from "lucide-react"
 import type { Tour } from "@/lib/data/tours"
 
 const ui: Record<Locale, {
   back: string; duration: string; group: string; highlights: string;
   includes: string; book: string; gallery: string; price: string; perPerson: string;
 }> = {
-  es: { back: "Volver a tours", duration: "Duración", group: "Grupo", highlights: "Puntos Destacados", includes: "¿Qué incluye?", book: "Reservar por WhatsApp", gallery: "Galería de fotos", price: "Precio", perPerson: "por persona" },
-  en: { back: "Back to tours", duration: "Duration", group: "Group", highlights: "Highlights", includes: "What's included?", book: "Book via WhatsApp", gallery: "Photo gallery", price: "Price", perPerson: "per person" },
-  pt: { back: "Voltar para tours", duration: "Duração", group: "Grupo", highlights: "Destaques", includes: "O que está incluído?", book: "Reservar pelo WhatsApp", gallery: "Galeria de fotos", price: "Preço", perPerson: "por pessoa" },
+  es: { back: "Volver a tours", duration: "Duración", group: "Grupo", highlights: "Puntos Destacados", includes: "¿Qué incluye?", book: "Reservar por WhatsApp", gallery: "Galería de fotos", price: "Precio", perPerson: "por persona", nameLabel: "Nombre completo", dateLabel: "Fecha deseada", pickDate: "Seleccionar fecha" },
+  en: { back: "Back to tours", duration: "Duration", group: "Group", highlights: "Highlights", includes: "What's included?", book: "Book via WhatsApp", gallery: "Photo gallery", price: "Price", perPerson: "per person", nameLabel: "Full name", dateLabel: "Desired date", pickDate: "Pick a date" },
+  pt: { back: "Voltar para tours", duration: "Duração", group: "Grupo", highlights: "Destaques", includes: "O que está incluído?", book: "Reservar pelo WhatsApp", gallery: "Galeria de fotos", price: "Preço", perPerson: "por pessoa", nameLabel: "Nome completo", dateLabel: "Data desejada", pickDate: "Escolha uma data" },
 }
 
 export function TourDetailClient({ tour }: { tour: Tour }) {
@@ -21,6 +30,17 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
   const tr = tour.translations[locale]
   const label = ui[locale]
   const [activeImg, setActiveImg] = useState(0)
+
+  const [name, setName] = useState("")
+  const [date, setDate] = useState<Date>()
+
+  const dateLocales = { es, en: enUS, pt: ptBR }
+
+  const handleWhatsApp = () => {
+    const formattedDate = date ? format(date, "PPP", { locale: dateLocales[locale] }) : "No definida";
+    const personalizedMsg = `Hola, me llamo ${name || "un viajero"}. Me interesa reservar el tour "${tr.name}" para la fecha: ${formattedDate}. ¿Me pueden dar más información?`;
+    window.open(`https://wa.me/51999999999?text=${encodeURIComponent(personalizedMsg)}`, "_blank");
+  }
 
   return (
     <div className="min-h-screen pb-20">
@@ -54,7 +74,7 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
       <div className="mx-auto max-w-7xl px-4 py-16 lg:px-8 -mt-20 relative z-20">
         <div className="grid gap-12 lg:grid-cols-3">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-12 rounded-3xl bg-background p-8 md:p-12 shadow-2xl border border-border/50">
+          <ScrollAnimation delay={0.1} className="lg:col-span-2 space-y-12 rounded-3xl bg-background p-8 md:p-12 shadow-2xl border border-border/50">
             {/* Title */}
             <div>
               <span className="inline-block rounded-full bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary mb-4">
@@ -106,22 +126,22 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
               </div>
             </div>
 
-            {/* Includes */}
-            <div>
-              <h2 className="text-2xl font-bold text-foreground mb-6">{label.includes}</h2>
-              <ul className="grid sm:grid-cols-2 gap-4">
-                {tr.includes.map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-base text-foreground bg-primary/5 p-4 rounded-xl">
-                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+              {/* Includes */}
+              <div>
+                <h2 className="text-2xl font-bold text-foreground mb-6">{label.includes}</h2>
+                <ul className="grid sm:grid-cols-2 gap-4">
+                  {tr.includes.map((item) => (
+                    <li key={item} className="flex items-center gap-3 text-base text-foreground bg-primary/5 p-4 rounded-xl">
+                      <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+          </ScrollAnimation>
 
           {/* Booking Sidebar */}
-          <div className="lg:col-span-1">
+          <ScrollAnimation delay={0.2} className="lg:col-span-1">
             <div className="sticky top-32 rounded-3xl border border-border/50 bg-card p-8 shadow-2xl">
               <div className="mb-8">
                 <p className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-2">{label.price}</p>
@@ -131,15 +151,48 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
                 <p className="text-sm text-muted-foreground mt-1">{label.perPerson}</p>
               </div>
 
-              <a
-                href={`https://wa.me/51999999999?text=${encodeURIComponent(tour.whatsappMsg)}`}
-                target="_blank"
-                rel="noopener noreferrer"
+              {/* Booking Form */}
+              <div className="space-y-4 mb-8">
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-1.5 block">{label.nameLabel}</label>
+                  <Input 
+                    placeholder="Ej. Juan Pérez" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="rounded-xl bg-background"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-1.5 block">{label.dateLabel}</label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={`w-full justify-start text-left font-normal rounded-xl bg-background ${!date && "text-muted-foreground"}`}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {date ? format(date, "PPP", { locale: dateLocales[locale] }) : <span>{label.pickDate}</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+
+              <button
+                onClick={handleWhatsApp}
                 className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#25D366] px-6 py-4 text-base font-bold text-white hover:bg-[#20b858] hover:scale-[1.02] transition-all shadow-lg shadow-[#25D366]/20"
               >
                 <FaWhatsapp className="h-6 w-6" />
                 {label.book}
-              </a>
+              </button>
 
               <div className="mt-8 pt-8 border-t border-border">
                 <Link href="/contacto" className="flex items-center justify-center gap-2 text-sm font-semibold text-primary hover:underline">
@@ -148,7 +201,7 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
                 </Link>
               </div>
             </div>
-          </div>
+          </ScrollAnimation>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { WhyPrivateTour } from "@/components/tours/why-private-tour"
 import { DesignProcess } from "@/components/tours/design-process"
 import { InspirationCards } from "@/components/tours/inspiration-cards"
 import { ToursContactForm } from "@/components/tours/tours-contact-form"
+import { ScrollAnimation } from "@/components/ui/scroll-animation"
 
 export const metadata = {
   title: "Tours Privados | Obelisco Travel",
@@ -14,10 +15,18 @@ export default function ExperienciasPage() {
   return (
     <>
       <ToursHero />
-      <WhyPrivateTour />
-      <DesignProcess />
-      <InspirationCards />
-      <ToursContactForm />
+      <ScrollAnimation delay={0.1}>
+        <WhyPrivateTour />
+      </ScrollAnimation>
+      <ScrollAnimation delay={0.1}>
+        <DesignProcess />
+      </ScrollAnimation>
+      <ScrollAnimation delay={0.1}>
+        <InspirationCards />
+      </ScrollAnimation>
+      <ScrollAnimation delay={0.1}>
+        <ToursContactForm />
+      </ScrollAnimation>
     </>
   )
 }

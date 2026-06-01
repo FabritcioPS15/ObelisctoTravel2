@@ -1,5 +1,7 @@
 import Link from "next/link"
 import { ArrowRight, Mail, Phone, MapPin, Clock } from "lucide-react"
+import { ScrollAnimation } from "@/components/ui/scroll-animation"
+import { PageBanner } from "@/components/ui/page-banner"
 
 export const metadata = {
   title: "Contáctenos | Obelisco Travel – Tours en Ayacucho, Perú",
@@ -18,22 +20,13 @@ const contactInfo = [
 export default function ContactoPage() {
   return (
     <>
-      <section className="relative h-[45vh] min-h-[350px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1568454537842-d933259bb258?w=1920&q=80')" }}>
-          <div className="absolute inset-0 bg-black/55" />
-        </div>
-        <div className="relative z-10 text-center text-white px-4 max-w-3xl mx-auto">
-          <span className="inline-block mb-4 rounded-full bg-primary/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground">Estamos aquí para ti</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">Contáctenos</h1>
-          <p className="text-lg md:text-xl text-white/90 leading-relaxed">Planifica tu próxima aventura con nosotros. Respondemos en menos de 2 horas.</p>
-        </div>
-      </section>
+      <PageBanner pageKey="contacto" backgroundImage="https://images.unsplash.com/photo-1568454537842-d933259bb258?w=1920&q=80" className="h-[45vh] min-h-[350px]" />
 
       <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Form */}
-            <div>
+            <ScrollAnimation delay={0.1}>
               <h2 className="text-2xl font-bold tracking-tight text-foreground mb-2">Envíanos un mensaje</h2>
               <p className="text-muted-foreground mb-8">Cuéntanos sobre tu viaje ideal y te respondemos con una propuesta personalizada.</p>
 
@@ -76,10 +69,10 @@ export default function ContactoPage() {
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </form>
-            </div>
+            </ScrollAnimation>
 
             {/* Contact Info */}
-            <div className="space-y-8">
+            <ScrollAnimation delay={0.2} className="space-y-8">
               <div>
                 <h2 className="text-2xl font-bold tracking-tight text-foreground mb-2">Información de contacto</h2>
                 <p className="text-muted-foreground">También puedes contactarnos directamente por cualquiera de estos medios.</p>
@@ -113,7 +106,7 @@ export default function ContactoPage() {
                   <ArrowRight className="h-4 w-4" />
                 </a>
               </div>
-            </div>
+            </ScrollAnimation>
           </div>
         </div>
       </section>

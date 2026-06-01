@@ -1,40 +1,43 @@
-import { Headset, Users, ShieldCheck, Heart } from "lucide-react"
+"use client";
 
-const benefits = [
-  {
-    icon: Headset,
-    title: "Atención Personalizada",
-    description:
-      "Diseño de itinerarios desde cero, adaptados a tus expectativas.",
-  },
-  {
-    icon: Users,
-    title: "Guías Expertos",
-    description:
-      "Master Guides con profundo conocimiento técnico y cultural del territorio.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Seguridad Intransigente",
-    description:
-      "Protocolos rigurosos y equipos de alta montaña para tu tranquilidad.",
-  },
-  {
-    icon: Heart,
-    title: "Autenticidad",
-    description:
-      "Conexiones reales con comunidades locales y turismo sostenible.",
-  },
-]
+import { Headset, Users, ShieldCheck, Heart } from "lucide-react"
+import { useLang } from "@/lib/store/lang"
+import { t } from "@/lib/i18n/translations"
 
 export function BenefitsSection() {
+  const { locale } = useLang();
+  const translations = t(locale).benefitsSection;
+
+  const benefits = [
+    {
+      icon: Headset,
+      title: translations.items.attention.title,
+      description: translations.items.attention.desc,
+    },
+    {
+      icon: Users,
+      title: translations.items.guides.title,
+      description: translations.items.guides.desc,
+    },
+    {
+      icon: ShieldCheck,
+      title: translations.items.security.title,
+      description: translations.items.security.desc,
+    },
+    {
+      icon: Heart,
+      title: translations.items.authenticity.title,
+      description: translations.items.authenticity.desc,
+    },
+  ]
+
   return (
     <section className="py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            ¿Por qué viajar con Obelisco Travel?
+            {translations.title}
           </h2>
         </div>
 

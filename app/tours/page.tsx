@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { TourList } from "@/components/tours/tour-list"
+import { PageBanner } from "@/components/ui/page-banner"
 
 export const metadata = {
   title: "Tours en Ayacucho y Perú | Obelisco Travel",
@@ -27,37 +28,19 @@ export default function ToursPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative h-[55vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1526392060635-9d6019884377?w=1920&q=80')" }}
-        >
-          <div className="absolute inset-0 bg-black/50" />
+      <PageBanner pageKey="tours" backgroundImage="https://images.unsplash.com/photo-1526392060635-9d6019884377?w=1920&q=80">
+        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <Button size="lg" className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 h-14 text-base font-bold shadow-lg transition-transform hover:scale-105" asChild>
+            <a href="https://wa.me/51999999999" target="_blank" rel="noopener noreferrer">
+              Reservar ahora
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </a>
+          </Button>
+          <Button size="lg" variant="outline" className="rounded-xl border-white bg-transparent text-white hover:bg-white/10 px-8 h-14 text-base font-bold transition-transform hover:scale-105" asChild>
+            <Link href="/contacto">Consultar disponibilidad</Link>
+          </Button>
         </div>
-        <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto mt-16">
-          <span className="inline-block mb-4 rounded-full bg-primary/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground">
-            Ayacucho · Perú
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 drop-shadow-md">
-            Tours y Experiencias en Ayacucho
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow">
-            Desde ruinas milenarias hasta cascadas escondidas. Elige tu aventura y déjanos llevarte
-            a los rincones más extraordinarios del Perú.
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 h-14 text-base font-bold shadow-lg transition-transform hover:scale-105" asChild>
-              <a href="https://wa.me/51999999999" target="_blank" rel="noopener noreferrer">
-                Reservar ahora
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-xl border-white bg-transparent text-white hover:bg-white/10 px-8 h-14 text-base font-bold transition-transform hover:scale-105" asChild>
-              <Link href="/contacto">Consultar disponibilidad</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      </PageBanner>
 
       {/* Tours grid */}
       <section className="py-20 lg:py-28 bg-muted/20">

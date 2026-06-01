@@ -1,8 +1,15 @@
+"use client";
+
 import { Button } from "@/components/ui/button"
 import { ArrowRight, MessageCircle } from "lucide-react"
 import Link from "next/link"
+import { useLang } from "@/lib/store/lang"
+import { t } from "@/lib/i18n/translations"
 
 export function HeroSection() {
+  const { locale } = useLang();
+  const translations = t(locale).homeHero;
+
   return (
     <section className="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -19,12 +26,10 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-4xl px-4 text-center text-white">
         <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-6xl text-balance">
-          Tours privados y experiencias de aventura en Ayacucho y el Perú.
+          {translations.title}
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-white/90 md:text-xl leading-relaxed">
-          Explora destinos extraordinarios junto a expertos locales. Vive aventuras
-          auténticas, recorridos privados y experiencias diseñadas para viajeros que
-          buscan mucho más que un simple viaje.
+          {translations.subtitle}
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Button
@@ -33,7 +38,7 @@ export function HeroSection() {
             asChild
           >
             <Link href="/contacto">
-              PLANIFICA TU AVENTURA
+              {translations.planButton}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
@@ -49,7 +54,7 @@ export function HeroSection() {
               rel="noopener noreferrer"
             >
               <MessageCircle className="mr-2 h-4 w-4" />
-              HABLAR POR WHATSAPP
+              {translations.whatsappButton}
             </a>
           </Button>
         </div>

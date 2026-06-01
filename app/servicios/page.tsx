@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { PageBanner } from "@/components/ui/page-banner"
 
 export const metadata = {
   title: "Servicios de Turismo | Obelisco Travel – Transporte, Tours y Hoteles en Ayacucho",
@@ -39,16 +40,7 @@ const services = [
 export default function ServiciosPage() {
   return (
     <>
-      <section className="relative h-[55vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=1920&q=80')" }}>
-          <div className="absolute inset-0 bg-black/50" />
-        </div>
-        <div className="relative z-10 text-center text-white px-4 max-w-3xl mx-auto">
-          <span className="inline-block mb-4 rounded-full bg-primary/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground">Lo que ofrecemos</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">Nuestros Servicios</h1>
-          <p className="text-lg md:text-xl text-white/90 leading-relaxed">Todo lo que necesitas para una experiencia de viaje completa, segura y memorable en Ayacucho y el Perú.</p>
-        </div>
-      </section>
+      <PageBanner pageKey="servicios" backgroundImage="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=1920&q=80" />
 
       <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 lg:px-8 space-y-24">
