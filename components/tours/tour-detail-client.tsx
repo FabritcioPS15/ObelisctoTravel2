@@ -4,7 +4,7 @@ import { useLang, type Locale } from "@/lib/store/lang"
 import { MapPin, Clock, Users, ArrowLeft, ArrowRight, CheckCircle } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { format } from "date-fns"
 import { es, enUS, ptBR } from "date-fns/locale"
 import type { Tour } from "@/lib/data/tours"
@@ -14,11 +14,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { CalendarIcon } from "lucide-react"
-import type { Tour } from "@/lib/data/tours"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
 
 const ui: Record<Locale, {
   back: string; duration: string; group: string; highlights: string;
-  includes: string; book: string; gallery: string; price: string; perPerson: string;
+  includes: string; book: string; gallery: string; price: string; perPerson: string; nameLabel: string; dateLabel: string; pickDate: string;
 }> = {
   es: { back: "Volver a tours", duration: "Duración", group: "Grupo", highlights: "Puntos Destacados", includes: "¿Qué incluye?", book: "Reservar por WhatsApp", gallery: "Galería de fotos", price: "Precio", perPerson: "por persona", nameLabel: "Nombre completo", dateLabel: "Fecha deseada", pickDate: "Seleccionar fecha" },
   en: { back: "Back to tours", duration: "Duration", group: "Group", highlights: "Highlights", includes: "What's included?", book: "Book via WhatsApp", gallery: "Photo gallery", price: "Price", perPerson: "per person", nameLabel: "Full name", dateLabel: "Desired date", pickDate: "Pick a date" },
@@ -34,6 +34,19 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
   const [name, setName] = useState("")
   const [date, setDate] = useState<Date>()
 
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (!api) return
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap())
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api])
+
   const dateLocales = { es, en: enUS, pt: ptBR }
 
   const handleWhatsApp = () => {
@@ -48,20 +61,9 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
       <div className="relative h-[55vh] min-h-[400px] overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center transition-all duration-700"
-          style={{ backgroundImage: `url(${tour.images[activeImg] || tour.image})` }}
+          style={{ backgroundImage: `url(${tour.image})` }}
         />
         <div className="absolute inset-0 bg-black/40" />
-        {tour.images.length > 1 && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
-            {tour.images.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveImg(i)}
-                className={`h-2.5 w-10 rounded-full transition-all ${i === activeImg ? "bg-white" : "bg-white/40"}`}
-              />
-            ))}
-          </div>
-        )}
         <div className="absolute top-28 left-6 md:left-12 z-10">
           <Link href="/tours" className="flex items-center gap-2 rounded-full bg-black/50 px-5 py-2.5 text-sm font-medium text-white hover:bg-black/70 transition-colors backdrop-blur-md border border-white/10">
             <ArrowLeft className="h-4 w-4" />
@@ -83,7 +85,7 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
               <h1 className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl mb-6 leading-tight">
                 {tr.name}
               </h1>
-              
+
               <div className="flex flex-wrap items-center gap-6 text-sm font-medium text-muted-foreground border-b border-border pb-6">
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-primary" />
@@ -126,18 +128,59 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
               </div>
             </div>
 
-              {/* Includes */}
-              <div>
-                <h2 className="text-2xl font-bold text-foreground mb-6">{label.includes}</h2>
-                <ul className="grid sm:grid-cols-2 gap-4">
-                  {tr.includes.map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-base text-foreground bg-primary/5 p-4 rounded-xl">
-                      <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+            {/* Includes */}
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-6">{label.includes}</h2>
+              <ul className="grid sm:grid-cols-2 gap-4">
+                {tr.includes.map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-base text-foreground bg-primary/5 p-4 rounded-xl">
+                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Gallery Section */}
+            {tour.images && tour.images.length > 0 && (
+              <div className="pt-8 border-t border-border/50">
+                <h2 className="text-2xl font-bold text-foreground mb-6">{label.gallery}</h2>
+                <div className="px-12">
+                  <Carousel 
+                    setApi={setApi} 
+                    opts={{ align: "start", loop: true }}
+                    className="w-full"
+                  >
+                    <CarouselContent className="-ml-4">
+                      {tour.images.map((img, idx) => (
+                        <CarouselItem key={idx} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                          <div className="relative aspect-video rounded-2xl overflow-hidden group">
+                            <div 
+                              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                              style={{ backgroundImage: `url(${img})` }}
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
+                  <div className="py-4 flex justify-center gap-2">
+                    {Array.from({ length: count }).map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => api?.scrollTo(i)}
+                        className={`h-2 w-2 rounded-full transition-all ${
+                          i === current ? "bg-primary w-6" : "bg-primary/30"
+                        }`}
+                        aria-label={`Go to slide ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
+            )}
           </ScrollAnimation>
 
           {/* Booking Sidebar */}
@@ -155,8 +198,8 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
               <div className="space-y-4 mb-8">
                 <div>
                   <label className="text-sm font-medium text-foreground mb-1.5 block">{label.nameLabel}</label>
-                  <Input 
-                    placeholder="Ej. Juan Pérez" 
+                  <Input
+                    placeholder="Ej. Juan Pérez"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="rounded-xl bg-background"

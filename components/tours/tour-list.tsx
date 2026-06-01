@@ -35,10 +35,11 @@ export function TourList() {
                   style={{ backgroundImage: `url(${tour.image})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-4 left-4">
-                  <span className="rounded-full bg-primary/90 backdrop-blur-sm px-4 py-1.5 text-sm font-bold text-primary-foreground shadow-lg">
-                    S/ {tour.price.toFixed(2)} <span className="font-normal text-xs opacity-90">{label.perPerson}</span>
-                  </span>
+                <div className="absolute top-4 right-4">
+                  <div className="flex flex-col items-center justify-center rounded-xl bg-white px-3 py-1.5 shadow-lg ring-1 ring-black/5">
+                    <span className="text-sm font-extrabold text-primary">S/ {tour.price.toFixed(2)}</span>
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{label.perPerson}</span>
+                  </div>
                 </div>
               </div>
 

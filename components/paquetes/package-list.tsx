@@ -39,14 +39,16 @@ export function PackageList() {
                     {tr.badge}
                   </span>
                 </div>
+                <div className="absolute top-4 right-4">
+                  <div className="flex flex-col items-center justify-center rounded-xl bg-white px-3 py-1.5 shadow-lg ring-1 ring-black/5">
+                    <span className="text-sm font-extrabold text-primary">S/ {pkg.price}</span>
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{label.perPerson}</span>
+                  </div>
+                </div>
                 <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
                   <span className="rounded-full bg-black/70 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-white shadow-lg border border-white/10">
                     {tr.duration}
                   </span>
-                  <div className="text-right flex-shrink-0">
-                    <span className="text-2xl font-bold text-primary drop-shadow-md">S/ {pkg.price}</span>
-                    <p className="text-xs text-white/90 drop-shadow">{label.perPerson}</p>
-                  </div>
                 </div>
               </div>
 

@@ -4,7 +4,7 @@ import { useLang, type Locale } from "@/lib/store/lang"
 import { Clock, CheckCircle, ArrowLeft, CalendarIcon, Users } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type { Package } from "@/lib/data/packages"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -12,19 +12,20 @@ import { Button } from "@/components/ui/button"
 import { format } from "date-fns"
 import { es, enUS, ptBR } from "date-fns/locale"
 import { cn } from "@/lib/utils"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
 
 const locales = { es, en: enUS, pt: ptBR }
 
 const ui: Record<Locale, {
-  back: string; duration: string; includes: string; book: string; 
+  back: string; duration: string; includes: string; book: string; gallery: string;
   price: string; perPerson: string; formTitle: string; 
   nameLabel: string; namePlaceholder: string;
   dateLabel: string; datePlaceholder: string;
   paxLabel: string;
 }> = {
-  es: { back: "Volver a paquetes", duration: "Duración", includes: "¿Qué incluye?", book: "Reservar por WhatsApp", price: "Precio desde", perPerson: "por persona", formTitle: "Reserva tu paquete", nameLabel: "Nombre completo", namePlaceholder: "Ej. Juan Pérez", dateLabel: "Fecha de viaje", datePlaceholder: "Selecciona una fecha", paxLabel: "Número de personas" },
-  en: { back: "Back to packages", duration: "Duration", includes: "What's included?", book: "Book via WhatsApp", price: "Price from", perPerson: "per person", formTitle: "Book your package", nameLabel: "Full name", namePlaceholder: "e.g. John Doe", dateLabel: "Travel date", datePlaceholder: "Select a date", paxLabel: "Number of people" },
-  pt: { back: "Voltar para pacotes", duration: "Duração", includes: "O que está incluído?", book: "Reservar pelo WhatsApp", price: "Preço a partir de", perPerson: "por pessoa", formTitle: "Reserve seu pacote", nameLabel: "Nome completo", namePlaceholder: "Ex. João Silva", dateLabel: "Data de viagem", datePlaceholder: "Selecione uma data", paxLabel: "Número de pessoas" },
+  es: { back: "Volver a paquetes", duration: "Duración", includes: "¿Qué incluye?", book: "Reservar por WhatsApp", gallery: "Galería de fotos", price: "Precio desde", perPerson: "por persona", formTitle: "Reserva tu paquete", nameLabel: "Nombre completo", namePlaceholder: "Ej. Juan Pérez", dateLabel: "Fecha de viaje", datePlaceholder: "Selecciona una fecha", paxLabel: "Número de personas" },
+  en: { back: "Back to packages", duration: "Duration", includes: "What's included?", book: "Book via WhatsApp", gallery: "Photo gallery", price: "Price from", perPerson: "per person", formTitle: "Book your package", nameLabel: "Full name", namePlaceholder: "e.g. John Doe", dateLabel: "Travel date", datePlaceholder: "Select a date", paxLabel: "Number of people" },
+  pt: { back: "Voltar para pacotes", duration: "Duração", includes: "O que está incluído?", book: "Reservar pelo WhatsApp", gallery: "Galeria de fotos", price: "Preço a partir de", perPerson: "por pessoa", formTitle: "Reserve seu pacote", nameLabel: "Nome completo", namePlaceholder: "Ex. João Silva", dateLabel: "Data de viagem", datePlaceholder: "Selecione uma data", paxLabel: "Número de pessoas" },
 }
 
 export function PackageDetailClient({ pkg }: { pkg: Package }) {
@@ -38,6 +39,19 @@ export function PackageDetailClient({ pkg }: { pkg: Package }) {
   const [name, setName] = useState("")
   const [date, setDate] = useState<Date>()
   const [pax, setPax] = useState("2")
+
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (!api) return
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap())
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api])
 
   const handleBook = (e: React.FormEvent) => {
     e.preventDefault()
@@ -62,20 +76,9 @@ export function PackageDetailClient({ pkg }: { pkg: Package }) {
       <div className="relative h-[55vh] min-h-[400px] overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center transition-all duration-700"
-          style={{ backgroundImage: `url(${pkg.images[activeImg] || pkg.image})` }}
+          style={{ backgroundImage: `url(${pkg.image})` }}
         />
         <div className="absolute inset-0 bg-black/40" />
-        {pkg.images.length > 1 && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-            {pkg.images.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveImg(i)}
-                className={`h-2.5 w-10 rounded-full transition-all ${i === activeImg ? "bg-white" : "bg-white/40"}`}
-              />
-            ))}
-          </div>
-        )}
         <div className="absolute top-28 left-6 md:left-12 z-10">
           <Link href="/paquetes" className="flex items-center gap-2 rounded-full bg-black/50 px-5 py-2.5 text-sm font-medium text-white hover:bg-black/70 transition-colors backdrop-blur-md border border-white/10">
             <ArrowLeft className="h-4 w-4" />
@@ -128,6 +131,47 @@ export function PackageDetailClient({ pkg }: { pkg: Package }) {
                 ))}
               </ul>
             </div>
+
+            {/* Gallery Section */}
+            {pkg.images && pkg.images.length > 0 && (
+              <div className="pt-8 border-t border-border/50">
+                <h2 className="text-2xl font-bold text-foreground mb-6">{label.gallery}</h2>
+                <div className="px-12">
+                  <Carousel 
+                    setApi={setApi} 
+                    opts={{ align: "start", loop: true }}
+                    className="w-full"
+                  >
+                    <CarouselContent className="-ml-4">
+                      {pkg.images.map((img, idx) => (
+                        <CarouselItem key={idx} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                          <div className="relative aspect-video rounded-2xl overflow-hidden group">
+                            <div 
+                              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                              style={{ backgroundImage: `url(${img})` }}
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
+                  <div className="py-4 flex justify-center gap-2">
+                    {Array.from({ length: count }).map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => api?.scrollTo(i)}
+                        className={`h-2 w-2 rounded-full transition-all ${
+                          i === current ? "bg-primary w-6" : "bg-primary/30"
+                        }`}
+                        aria-label={`Go to slide ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Booking Sidebar / Form */}
