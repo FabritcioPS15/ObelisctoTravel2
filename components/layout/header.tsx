@@ -77,8 +77,10 @@ export function Header() {
     >
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-4 lg:px-8 relative z-10">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-<Image src="/Logo.png" alt="Obelisco Travel" width={40} height={40} className="h-8 w-auto" />
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative">
+            <Image src="/Logo.png" alt="Obelisco Travel" width={80} height={80} className="h-24 w-auto transition-transform duration-300 group-hover:scale-110" />
+          </div>
         </Link>
 
         {/* Desktop Nav */}

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useLang } from "@/lib/store/lang"
 import { t } from "@/lib/i18n/translations"
 import { Facebook, Instagram, Twitter, Youtube, MapPin, Phone, Mail } from "lucide-react"
+import Image from "next/image"
 
 export function Footer() {
   const { locale } = useLang()
@@ -15,8 +16,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="/" className="text-2xl font-bold text-secondary">
-              Obelisco Travel
+            <Link href="/" className="flex items-center gap-3 group">
+              <Image src="/Logo.png" alt="Obelisco Travel" width={160} height={80} className="h-16 w-auto transition-transform duration-300 group-hover:scale-110" />
+
             </Link>
             <p className="text-white/80 leading-relaxed text-sm">
               {tr.footer.description}
