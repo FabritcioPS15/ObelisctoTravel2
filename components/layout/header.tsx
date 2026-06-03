@@ -40,20 +40,20 @@ export function Header() {
       name: tr.nav.services, href: "/servicios",
       megaMenu: true,
       submenu: [
-        { 
-          name: tr.transporte?.heroBadge || "Transporte", 
+        {
+          name: tr.transporte?.heroBadge || "Transporte",
           href: "/servicios/transporte",
           description: locale === "en" ? "Private and group transfers." : locale === "pt" ? "Translados privados." : "Traslados privados y grupales.",
           icon: Car
         },
-        { 
-          name: tr.nav.tours, 
+        {
+          name: tr.nav.tours,
           href: "/tours",
           description: locale === "en" ? "Explore our guided excursions." : locale === "pt" ? "Explore nossas excursões." : "Explora nuestras excursiones.",
           icon: MapIcon
         },
-        { 
-          name: locale === "en" ? "Hotels" : locale === "pt" ? "Hotéis" : "Hoteles", 
+        {
+          name: locale === "en" ? "Hotels" : locale === "pt" ? "Hotéis" : "Hoteles",
           href: "/hoteles",
           description: locale === "en" ? "Comfortable stays." : locale === "pt" ? "Estadias confortáveis." : "Estancias cómodas y seguras.",
           icon: Building
@@ -68,18 +68,17 @@ export function Header() {
   const currentLang = languages.find((l) => l.code === locale)!
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? "bg-background/95 backdrop-blur-md shadow-sm py-2 border-b border-border/40" 
-          : "bg-background/60 backdrop-blur-sm py-4 border-b border-transparent"
-      }`}
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+        ? "bg-background/60 backdrop-blur-md shadow-sm py-1.5 border-b border-border/40"
+        : "bg-background py-2 border-b border-transparent"
+        }`}
     >
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-4 lg:px-8 relative z-10">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative">
-            <Image src="/Logo.png" alt="Obelisco Travel" width={80} height={80} className="h-24 w-auto transition-transform duration-300 group-hover:scale-110" />
+            <Image src="/Logo.png" alt="Obelisco Travel" width={100} height={100} className="h-20 w-auto transition-transform duration-300 group-hover:scale-110" />
           </div>
         </Link>
 
@@ -94,7 +93,7 @@ export function Header() {
             >
               <Link
                 href={item.href}
-                className="group relative flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                className="group relative flex items-center gap-1.5 text-base font-semibold text-muted-foreground transition-colors hover:text-foreground"
               >
                 {item.name}
                 {item.submenu && (
@@ -107,7 +106,7 @@ export function Header() {
               {/* Dropdown with animation */}
               <AnimatePresence>
                 {item.submenu && openSubmenu === item.name && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -118,8 +117,8 @@ export function Header() {
                       <div className="bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-xl overflow-hidden flex">
                         {/* Image Side */}
                         <div className="w-1/3 bg-muted relative p-6 flex flex-col justify-end overflow-hidden group/mega">
-                          <img 
-                            src="https://images.unsplash.com/photo-1587595431973-160d0d94add1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                          <img
+                            src="https://images.unsplash.com/photo-1587595431973-160d0d94add1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             alt="Services"
                             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/mega:scale-110"
                           />
@@ -184,7 +183,7 @@ export function Header() {
             <button
               onClick={() => setLangOpen(!langOpen)}
               onBlur={() => setTimeout(() => setLangOpen(false), 200)}
-              className="flex items-center gap-2 rounded-xl border border-border/50 bg-background/50 px-3.5 py-2 text-xs font-bold text-foreground shadow-sm transition-all hover:border-primary hover:text-primary hover:shadow-md"
+              className="flex items-center gap-2 rounded-xl border border-border/50 bg-background/50 px-3.5 py-2 text-sm font-bold text-foreground shadow-sm transition-all hover:border-primary hover:text-primary hover:shadow-md"
             >
               <Globe className="h-4 w-4 text-primary" />
               <span className="uppercase tracking-widest">{currentLang.code}</span>
@@ -194,7 +193,7 @@ export function Header() {
             {/* Language Dropdown */}
             <AnimatePresence>
               {langOpen && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -206,11 +205,10 @@ export function Header() {
                       <button
                         key={lang.code}
                         onClick={() => { setLocale(lang.code); setLangOpen(false) }}
-                        className={`flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
-                          locale === lang.code 
-                            ? "bg-primary text-primary-foreground shadow-md" 
-                            : "text-foreground hover:bg-muted"
-                        }`}
+                        className={`flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${locale === lang.code
+                          ? "bg-primary text-primary-foreground shadow-md"
+                          : "text-foreground hover:bg-muted"
+                          }`}
                       >
                         <span className="flex-1 text-left">{lang.label}</span>
                         {locale === lang.code && <span className="text-primary-foreground">✓</span>}
@@ -223,7 +221,7 @@ export function Header() {
           </div>
 
           <Link href="/contacto">
-            <Button className="rounded-xl bg-primary px-6 py-5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105 hover:bg-primary/90 hover:shadow-primary/30">
+            <Button className="rounded-xl bg-primary px-6 py-3.5 text-base font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105 hover:bg-primary/90 hover:shadow-primary/30">
               {tr.cta.contactUs}
             </Button>
           </Link>
@@ -252,11 +250,11 @@ export function Header() {
           >
             <div className="space-y-1">
               {navigation.map((item, i) => (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 + 0.1 }}
-                  key={item.name} 
+                  key={item.name}
                   className="rounded-xl overflow-hidden"
                 >
                   <div className="flex items-center justify-between">
@@ -268,19 +266,19 @@ export function Header() {
                       {item.name}
                     </Link>
                     {item.submenu && (
-                      <button 
-                        onClick={() => setOpenSubmenu(openSubmenu === item.name ? null : item.name)} 
+                      <button
+                        onClick={() => setOpenSubmenu(openSubmenu === item.name ? null : item.name)}
                         className="p-3.5 hover:bg-primary/5 rounded-lg transition-colors"
                       >
                         <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${openSubmenu === item.name ? "rotate-180 text-primary" : "text-muted-foreground"}`} />
                       </button>
                     )}
                   </div>
-                  
+
                   {/* Mobile Submenu */}
                   <AnimatePresence>
                     {item.submenu && openSubmenu === item.name && (
-                      <motion.div 
+                      <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -305,7 +303,7 @@ export function Header() {
               ))}
 
               {/* Mobile Language Switcher */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
@@ -320,11 +318,10 @@ export function Header() {
                     <button
                       key={lang.code}
                       onClick={() => { setLocale(lang.code); setMobileMenuOpen(false) }}
-                      className={`flex items-center justify-center rounded-xl py-3 text-sm font-bold transition-all duration-200 ${
-                        locale === lang.code 
-                          ? "bg-primary text-primary-foreground shadow-md" 
-                          : "bg-muted/50 text-foreground hover:bg-muted"
-                      }`}
+                      className={`flex items-center justify-center rounded-xl py-3 text-sm font-bold transition-all duration-200 ${locale === lang.code
+                        ? "bg-primary text-primary-foreground shadow-md"
+                        : "bg-muted/50 text-foreground hover:bg-muted"
+                        }`}
                     >
                       {lang.code.toUpperCase()}
                     </button>
@@ -332,7 +329,7 @@ export function Header() {
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
