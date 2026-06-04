@@ -25,6 +25,10 @@ const ui: Record<Locale, {
   pt: { back: "Voltar para tours", duration: "Duração", group: "Grupo", highlights: "Destaques", includes: "O que está incluído?", book: "Reservar pelo WhatsApp", gallery: "Galeria de fotos", price: "Preço", perPerson: "por pessoa", nameLabel: "Nome completo", dateLabel: "Data desejada", pickDate: "Escolha uma data" },
 }
 
+import { DatePickerWithRange } from "@/components/ui/date-range-picker"
+import { DateInfoIcon } from "@/components/ui/date-info-icon"
+import { DateRange } from "react-day-picker"
+
 export function TourDetailClient({ tour }: { tour: Tour }) {
   const { locale } = useLang()
   const tr = tour.translations[locale]
@@ -32,7 +36,7 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
   const [activeImg, setActiveImg] = useState(0)
 
   const [name, setName] = useState("")
-  const [date, setDate] = useState<Date>()
+  const [date, setDate] = useState<DateRange | undefined>(undefined)
 
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
@@ -50,7 +54,14 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
   const dateLocales = { es, en: enUS, pt: ptBR }
 
   const handleWhatsApp = () => {
-    const formattedDate = date ? format(date, "PPP", { locale: dateLocales[locale] }) : "No definida";
+    let formattedDate = "No definida";
+    if (date?.from) {
+      if (date.to) {
+        formattedDate = `${format(date.from, "PPP", { locale: dateLocales[locale] })} - ${format(date.to, "PPP", { locale: dateLocales[locale] })}`;
+      } else {
+        formattedDate = format(date.from, "PPP", { locale: dateLocales[locale] });
+      }
+    }
     const personalizedMsg = `Hola, me llamo ${name || "un viajero"}. Me interesa reservar el tour "${tr.name}" para la fecha: ${formattedDate}. ¿Me pueden dar más información?`;
     window.open(`https://wa.me/51999999999?text=${encodeURIComponent(personalizedMsg)}`, "_blank");
   }
@@ -206,26 +217,8 @@ export function TourDetailClient({ tour }: { tour: Tour }) {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-foreground mb-1.5 block">{label.dateLabel}</label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={`w-full justify-start text-left font-normal rounded-xl bg-background ${!date && "text-muted-foreground"}`}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {date ? format(date, "PPP", { locale: dateLocales[locale] }) : <span>{label.pickDate}</span>}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <label className="flex items-center gap-1.5 text-sm font-medium text-foreground mb-1.5">{label.dateLabel} <DateInfoIcon /></label>
+                  <DatePickerWithRange date={date} setDate={setDate} />
                 </div>
               </div>
 

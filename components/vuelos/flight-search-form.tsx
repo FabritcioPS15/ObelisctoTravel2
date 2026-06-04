@@ -13,6 +13,10 @@ import {
 import { Search, ArrowRightLeft, Users, Calendar } from "lucide-react"
 import { cities } from "@/lib/data/flights"
 
+import { DatePickerWithRange } from "@/components/ui/date-range-picker"
+import { DateInfoIcon } from "@/components/ui/date-info-icon"
+import { DateRange } from "react-day-picker"
+
 interface FlightSearchFormProps {
   onSearch: (params: {
     origin: string
@@ -26,8 +30,7 @@ interface FlightSearchFormProps {
 export function FlightSearchForm({ onSearch }: FlightSearchFormProps) {
   const [origin, setOrigin] = useState("LIM")
   const [destination, setDestination] = useState("AYP")
-  const [departureDate, setDepartureDate] = useState("")
-  const [returnDate, setReturnDate] = useState("")
+  const [date, setDate] = useState<DateRange | undefined>(undefined)
   const [passengers, setPassengers] = useState("2")
 
   const handleSwap = () => {
@@ -41,8 +44,8 @@ export function FlightSearchForm({ onSearch }: FlightSearchFormProps) {
     onSearch({
       origin,
       destination,
-      departureDate,
-      returnDate,
+      departureDate: date?.from?.toISOString() || "",
+      returnDate: date?.to?.toISOString() || "",
       passengers: parseInt(passengers),
     })
   }
@@ -50,7 +53,7 @@ export function FlightSearchForm({ onSearch }: FlightSearchFormProps) {
   return (
     <div className="rounded-xl border border-border bg-card p-6 shadow-lg">
       <form onSubmit={handleSubmit}>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {/* Origin */}
           <div className="relative">
             <label className="mb-2 block text-sm font-medium text-foreground">
@@ -102,37 +105,12 @@ export function FlightSearchForm({ onSearch }: FlightSearchFormProps) {
             </Select>
           </div>
 
-          {/* Departure Date */}
+          {/* Date Range */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-foreground">
-              Fecha de ida
+            <label className="mb-2 flex items-center gap-1.5 text-sm font-medium text-foreground">
+              Fechas de viaje <DateInfoIcon />
             </label>
-            <div className="relative">
-              <Input
-                type="date"
-                value={departureDate}
-                onChange={(e) => setDepartureDate(e.target.value)}
-                className="pl-10"
-                required
-              />
-              <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            </div>
-          </div>
-
-          {/* Return Date */}
-          <div>
-            <label className="mb-2 block text-sm font-medium text-foreground">
-              Fecha de vuelta
-            </label>
-            <div className="relative">
-              <Input
-                type="date"
-                value={returnDate}
-                onChange={(e) => setReturnDate(e.target.value)}
-                className="pl-10"
-              />
-              <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            </div>
+            <DatePickerWithRange date={date} setDate={setDate} />
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ArrowRight, Mail, Phone, MapPin, Clock } from "lucide-react"
 import { ScrollAnimation } from "@/components/ui/scroll-animation"
 import { PageBanner } from "@/components/ui/page-banner"
+import { ContactoForm } from "@/components/contacto/contacto-form"
 
 export const metadata = {
   title: "Contáctenos | Obelisco Travel – Tours en Ayacucho, Perú",
@@ -30,45 +31,7 @@ export default function ContactoPage() {
               <h2 className="text-2xl font-bold tracking-tight text-foreground mb-2">Envíanos un mensaje</h2>
               <p className="text-muted-foreground mb-8">Cuéntanos sobre tu viaje ideal y te respondemos con una propuesta personalizada.</p>
 
-              <form className="space-y-5">
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                  <div>
-                    <label htmlFor="nombre" className="block text-sm font-medium text-foreground mb-1.5">Nombre completo *</label>
-                    <input type="text" id="nombre" required className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition" placeholder="Tu nombre" />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1.5">Email *</label>
-                    <input type="email" id="email" required className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition" placeholder="tu@email.com" />
-                  </div>
-                </div>
-                <div>
-                  <label htmlFor="telefono" className="block text-sm font-medium text-foreground mb-1.5">Teléfono / WhatsApp</label>
-                  <input type="tel" id="telefono" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition" placeholder="+51 999 999 999" />
-                </div>
-                <div>
-                  <label htmlFor="servicio" className="block text-sm font-medium text-foreground mb-1.5">Servicio de interés</label>
-                  <select id="servicio" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition">
-                    <option value="">Selecciona una opción</option>
-                    <option value="tour">Tour específico</option>
-                    <option value="paquete">Paquete turístico</option>
-                    <option value="transporte">Servicio de transporte</option>
-                    <option value="hotel">Reserva de hotel</option>
-                    <option value="personalizado">Itinerario personalizado</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="fechas" className="block text-sm font-medium text-foreground mb-1.5">Fechas de viaje tentativas</label>
-                  <input type="text" id="fechas" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition" placeholder="Ej: 15–20 de julio 2025" />
-                </div>
-                <div>
-                  <label htmlFor="mensaje" className="block text-sm font-medium text-foreground mb-1.5">Mensaje *</label>
-                  <textarea id="mensaje" rows={4} required className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition resize-none" placeholder="Cuéntanos sobre tu viaje ideal: destinos de interés, número de personas, preferencias especiales..." />
-                </div>
-                <button type="submit" className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
-                  Enviar mensaje
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              </form>
+              <ContactoForm />
             </ScrollAnimation>
 
             {/* Contact Info */}

@@ -13,6 +13,13 @@ import { format } from "date-fns"
 import { es, enUS, ptBR } from "date-fns/locale"
 import { cn } from "@/lib/utils"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const locales = { es, en: enUS, pt: ptBR }
 
@@ -28,6 +35,10 @@ const ui: Record<Locale, {
   pt: { back: "Voltar para pacotes", duration: "Duração", includes: "O que está incluído?", book: "Reservar pelo WhatsApp", gallery: "Galeria de fotos", price: "Preço a partir de", perPerson: "por pessoa", formTitle: "Reserve seu pacote", nameLabel: "Nome completo", namePlaceholder: "Ex. João Silva", dateLabel: "Data de viagem", datePlaceholder: "Selecione uma data", paxLabel: "Número de pessoas" },
 }
 
+import { DatePickerWithRange } from "@/components/ui/date-range-picker"
+import { DateInfoIcon } from "@/components/ui/date-info-icon"
+import { DateRange } from "react-day-picker"
+
 export function PackageDetailClient({ pkg }: { pkg: Package }) {
   const { locale } = useLang()
   const tr = pkg.translations[locale]
@@ -37,7 +48,7 @@ export function PackageDetailClient({ pkg }: { pkg: Package }) {
   
   // Form State
   const [name, setName] = useState("")
-  const [date, setDate] = useState<Date>()
+  const [date, setDate] = useState<DateRange | undefined>(undefined)
   const [pax, setPax] = useState("2")
 
   const [api, setApi] = useState<CarouselApi>()
@@ -56,7 +67,14 @@ export function PackageDetailClient({ pkg }: { pkg: Package }) {
   const handleBook = (e: React.FormEvent) => {
     e.preventDefault()
     
-    const formattedDate = date ? format(date, "PPP", { locale: locales[locale] }) : "No especificada"
+    let formattedDate = "No especificada"
+    if (date?.from) {
+      if (date.to) {
+        formattedDate = `${format(date.from, "PPP", { locale: locales[locale] })} - ${format(date.to, "PPP", { locale: locales[locale] })}`
+      } else {
+        formattedDate = format(date.from, "PPP", { locale: locales[locale] })
+      }
+    }
     
     let message = ""
     if (locale === "es") {
@@ -201,47 +219,26 @@ export function PackageDetailClient({ pkg }: { pkg: Package }) {
                 </div>
 
                 <div className="space-y-2 flex flex-col">
-                  <label className="text-sm font-medium text-foreground">{label.dateLabel}</label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full justify-start text-left font-normal h-11",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {date ? format(date, "PPP", { locale: locales[locale] }) : <span>{label.datePlaceholder}</span>}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        initialFocus
-                        locale={locales[locale]}
-                        disabled={(date) => date < new Date()}
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <label className="flex items-center gap-1.5 text-sm font-medium text-foreground">{label.dateLabel} <DateInfoIcon /></label>
+                  <DatePickerWithRange date={date} setDate={setDate} />
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-foreground">{label.paxLabel}</label>
-                  <div className="relative">
-                    <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <select
-                      value={pax}
-                      onChange={(e) => setPax(e.target.value)}
-                      className="flex h-11 w-full rounded-md border border-input bg-transparent pl-10 pr-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
-                    >
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                        <option key={num} value={num}>{num} {num === 1 ? "persona" : "personas"}</option>
+                  <Select value={pax} onValueChange={setPax}>
+                    <SelectTrigger className="w-full h-11">
+                      <Users className="mr-2 h-4 w-4 text-muted-foreground" />
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+                        <SelectItem key={num} value={num.toString()}>
+                          {num} {num === 1 ? "persona" : "personas"}
+                        </SelectItem>
                       ))}
-                    </select>
-                  </div>
+                      <SelectItem value="10+">10+ personas</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <button
