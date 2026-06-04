@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { format } from "date-fns"
-import { es } from "date-fns/locale"
+import { es, enUS, ptBR } from "date-fns/locale"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { DateRange } from "react-day-picker"
 
@@ -14,6 +14,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { useLang } from "@/lib/store/lang"
+
+const locales = { es, en: enUS, pt: ptBR }
+const selectDateText = { es: "Selecciona tus fechas", en: "Select your dates", pt: "Selecione suas datas" }
 
 export function DatePickerWithRange({
   className,
@@ -24,6 +28,10 @@ export function DatePickerWithRange({
   date: DateRange | undefined
   setDate: (date: DateRange | undefined) => void
 }) {
+  const { locale } = useLang()
+  const currentLocale = locales[locale] || es
+  const placeholder = selectDateText[locale] || selectDateText.es
+
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -40,14 +48,14 @@ export function DatePickerWithRange({
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y", { locale: es })} –{" "}
-                  {format(date.to, "LLL dd, y", { locale: es })}
+                  {format(date.from, "LLL dd, y", { locale: currentLocale })} –{" "}
+                  {format(date.to, "LLL dd, y", { locale: currentLocale })}
                 </>
               ) : (
-                format(date.from, "LLL dd, y", { locale: es })
+                format(date.from, "LLL dd, y", { locale: currentLocale })
               )
             ) : (
-              <span>Selecciona tus fechas</span>
+              <span>{placeholder}</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -59,7 +67,7 @@ export function DatePickerWithRange({
             selected={date}
             onSelect={setDate}
             numberOfMonths={1}
-            locale={es}
+            locale={currentLocale}
             disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
           />
         </PopoverContent>

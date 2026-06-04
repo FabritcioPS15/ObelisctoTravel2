@@ -6,8 +6,18 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip"
+import { useLang } from "@/lib/store/lang"
+
+const tooltipTexts = {
+  es: "Selecciona la fecha de inicio y luego la fecha de fin para definir tu rango de viaje.",
+  en: "Select the start date and then the end date to define your travel range.",
+  pt: "Selecione a data de início e depois a data de término para definir seu intervalo de viagem."
+}
 
 export function DateInfoIcon() {
+  const { locale } = useLang()
+  const tooltipText = tooltipTexts[locale] || tooltipTexts.es
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -20,7 +30,7 @@ export function DateInfoIcon() {
         </button>
       </TooltipTrigger>
       <TooltipContent side="top" className="max-w-[220px] text-center">
-        Selecciona la fecha de inicio y luego la fecha de fin para definir tu rango de viaje.
+        {tooltipText}
       </TooltipContent>
     </Tooltip>
   )
