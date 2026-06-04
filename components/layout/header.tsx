@@ -261,7 +261,7 @@ export function Header() {
                     <Link
                       href={item.href}
                       className="flex-1 py-3.5 px-4 text-lg font-bold text-foreground transition-colors hover:bg-primary/5 hover:text-primary"
-                      onClick={() => !item.submenu && setMobileMenuOpen(false)}
+                      onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.name}
                     </Link>
